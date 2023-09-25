@@ -1,8 +1,10 @@
 import * as React from 'react';
 import { View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NativeStackScreenProps, createNativeStackNavigator } from "@react-navigation/native-stack";
+import { RootStackParamList } from '../Navigator/MyNavigator';
 
+export type Props = NativeStackScreenProps<RootStackParamList,'Home'>
 
 const HomeScreen = () => {
     return (
