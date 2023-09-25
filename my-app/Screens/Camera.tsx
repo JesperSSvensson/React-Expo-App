@@ -17,7 +17,7 @@ interface CameraProps {
   photo: any;
   retakePicture: () => void;
   savePhoto: () => void;
-  deletePhoto: () => void;
+//   deletePhoto: () => void;
   toggleCameraType: () => void;
   flashMode: () => void;
 }
@@ -70,18 +70,18 @@ const CameraScreen = () => {
     }
   };
 
-  const deletePhoto = async () => {
-    if (capturedImage) {
-      try {
-        const key = `Pic-Saved-${new Date().getTime()}`;
-        await AsyncStorage.removeItem(key);
-        Alert.alert("Photo deleted successfully!");
-      } catch (error) {
-        console.error("Error deleting photo:", error);
-        Alert.alert("Failed to delete photo.");
-      }
-    }
-  };
+//   const deletePhoto = async () => {
+//     if (capturedImage) {
+//       try {
+//         const key = `Pic-Saved-${new Date().getTime()}`;
+//         await AsyncStorage.removeItem(key);
+//         Alert.alert("Photo deleted successfully!");
+//       } catch (error) {
+//         console.error("Error deleting photo:", error);
+//         Alert.alert("Failed to delete photo.");
+//       }
+//     }
+//   };
 
   const toggleCameraType = () => {
     setCameraType(current => (current === CameraType.back ? CameraType.front : CameraType.back));
@@ -115,7 +115,7 @@ const CameraScreen = () => {
               photo={capturedImage}
               savePhoto={savePhoto}
               retakePicture={retakePicture}
-              deletePhoto={deletePhoto}
+            //   deletePhoto={deletePhoto}
               toggleCameraType={toggleCameraType}
               flashMode={handleFlashMode}
             />
@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const CameraPreview: React.FC<CameraProps> = ({ photo, retakePicture, savePhoto, deletePhoto }) => {
+const CameraPreview: React.FC<CameraProps> = ({ photo, retakePicture, savePhoto}) => {
   console.log('Photo taken', photo);
   return (
     <View
@@ -303,7 +303,7 @@ const CameraPreview: React.FC<CameraProps> = ({ photo, retakePicture, savePhoto,
                 Re-take
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={deletePhoto}
               style={{
                 width: 130,
@@ -320,7 +320,7 @@ const CameraPreview: React.FC<CameraProps> = ({ photo, retakePicture, savePhoto,
               >
                 Delete photo
               </Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity
               onPress={savePhoto}
               style={{
