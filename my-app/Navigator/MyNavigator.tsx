@@ -1,10 +1,14 @@
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import HomeScreen from "../Screens/Home";
 import Login from "../Screens/Login";
+import CameraScreen from "../Screens/Camera";
+import SavedPhotosScreen from "../Screens/Storage";
 
 export type RootStackParamList = {
   Home: undefined;
   Login: undefined;
+  Camera: undefined;
+  Storage: undefined;
 };
 
 const Drawer = createDrawerNavigator<RootStackParamList>();
@@ -22,6 +26,8 @@ const MyNavigator = () => {
         component={Login}
       />
       <Drawer.Screen name="Home" component={HomeScreen} />
+      <Drawer.Screen name="Camera" component={CameraScreen}></Drawer.Screen>
+      <Drawer.Screen name="Storage" component={SavedPhotosScreen}></Drawer.Screen>
     </Drawer.Navigator>
   );
 };
