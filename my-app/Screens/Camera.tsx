@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   StyleSheet,
@@ -8,18 +8,20 @@ import {
   Alert,
   ImageBackground,
 } from 'react-native';
-import { Camera, FlashMode } from 'expo-camera';
+import { Camera } from 'expo-camera';
 import { CameraType } from 'expo-image-picker';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
+import { LocationObject, requestForegroundPermissionsAsync, getCurrentPositionAsync } from 'expo-location';
+import MapView, { Marker } from 'react-native-maps';
 
 interface CameraProps {
   photo: any;
   retakePicture: () => void;
   savePhoto: () => void;
-//   deletePhoto: () => void;
   toggleCameraType: () => void;
   flashMode: () => void;
+  location: LocationObject | null;
 }
 
 const CameraScreen = () => {
@@ -29,8 +31,22 @@ const CameraScreen = () => {
   const [cameraType, setCameraType] = useState(Camera.Constants.Type);
   const [flashMode, setFlashMode] = useState('off');
   const [iconColor, setIconColor] = useState('white');
-
+  const [location, setLocation] = useState<LocationObject | null>(null);
   const cameraRef = useRef<Camera | null>(null);
+
+  useEffect(() => {
+    async function getLocationAsync() {
+      const { status } = await requestForegroundPermissionsAsync();
+      if (status === 'granted') {
+        const location = await getCurrentPositionAsync({});
+        setLocation(location);
+      } else {
+        Alert.alert('Access to location denied.');
+      }
+    }
+
+    getLocationAsync();
+  }, []);
 
   const StartCamera = async () => {
     const { status } = await Camera.requestCameraPermissionsAsync();
@@ -47,8 +63,11 @@ const CameraScreen = () => {
     if (cameraRef.current) {
       const photo: any = await cameraRef.current.takePictureAsync();
       console.log(photo);
+
       setPreviewVisible(true);
       setCapturedImage(photo);
+
+      console.log("location", location);
     }
   };
 
@@ -57,10 +76,14 @@ const CameraScreen = () => {
       try {
         const timestamp = new Date().getTime();
         const key = `Pic-Saved-${timestamp}`;
-        
-        capturedImage.timestamp = timestamp;
   
-        await AsyncStorage.setItem(key, JSON.stringify(capturedImage));
+        const photoWithLocation = {
+          ...capturedImage,
+          timestamp: timestamp,
+          location: location, 
+        };
+  
+        await AsyncStorage.setItem(key, JSON.stringify(photoWithLocation));
         console.log("Photo saved successfully!");
         Alert.alert("Photo saved successfully!");
       } catch (error) {
@@ -69,19 +92,6 @@ const CameraScreen = () => {
       }
     }
   };
-
-//   const deletePhoto = async () => {
-//     if (capturedImage) {
-//       try {
-//         const key = `Pic-Saved-${new Date().getTime()}`;
-//         await AsyncStorage.removeItem(key);
-//         Alert.alert("Photo deleted successfully!");
-//       } catch (error) {
-//         console.error("Error deleting photo:", error);
-//         Alert.alert("Failed to delete photo.");
-//       }
-//     }
-//   };
 
   const toggleCameraType = () => {
     setCameraType(current => (current === CameraType.back ? CameraType.front : CameraType.back));
@@ -115,9 +125,9 @@ const CameraScreen = () => {
               photo={capturedImage}
               savePhoto={savePhoto}
               retakePicture={retakePicture}
-            //   deletePhoto={deletePhoto}
               toggleCameraType={toggleCameraType}
               flashMode={handleFlashMode}
+              location={location}
             />
           ) : (
             <Camera
@@ -254,8 +264,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const CameraPreview: React.FC<CameraProps> = ({ photo, retakePicture, savePhoto}) => {
-  console.log('Photo taken', photo);
+const CameraPreview: React.FC<CameraProps> = ({ photo, retakePicture, savePhoto, location }) => {
+  console.log('Photo taken', photo, 'Location:', location);
   return (
     <View
       style={{
@@ -303,24 +313,6 @@ const CameraPreview: React.FC<CameraProps> = ({ photo, retakePicture, savePhoto}
                 Re-take
               </Text>
             </TouchableOpacity>
-            {/* <TouchableOpacity
-              onPress={deletePhoto}
-              style={{
-                width: 130,
-                height: 40,
-                alignItems: 'center',
-                borderRadius: 4,
-              }}
-            >
-              <Text
-                style={{
-                  color: '#fff',
-                  fontSize: 20,
-                }}
-              >
-                Delete photo
-              </Text>
-            </TouchableOpacity> */}
             <TouchableOpacity
               onPress={savePhoto}
               style={{

@@ -5,6 +5,8 @@ import CameraScreen from "../Screens/Camera";
 import SavedPhotosScreen from "../Screens/Storage";
 import Maps from "../Screens/Maps";
 import Videos from "../Screens/Video";
+import Locations from "../Screens/Locations";
+
 
 export type RootStackParamList = {
   Home: undefined;
@@ -13,6 +15,7 @@ export type RootStackParamList = {
   Storage: undefined;
   Maps: undefined;
   Videos: undefined;
+  Locations: undefined;
 };
 
 const Drawer = createDrawerNavigator<RootStackParamList>();
@@ -34,6 +37,7 @@ const MyNavigator = () => {
       <Drawer.Screen name="Storage" component={SavedPhotosScreen}></Drawer.Screen>
       <Drawer.Screen name="Maps" component={Maps}></Drawer.Screen>
       <Drawer.Screen name="Videos" component={Videos}></Drawer.Screen>
+      <Drawer.Screen name="Locations" component={Locations}></Drawer.Screen>
     </Drawer.Navigator>
   );
 };
