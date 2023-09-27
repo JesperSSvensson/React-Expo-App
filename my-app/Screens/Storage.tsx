@@ -26,6 +26,7 @@ interface SavedPhoto {
   uri: string;
   timestamp: number;
   location: LocationObject | null;
+  caption: string;
 }
 
 const SavedPhotosScreen = () => {
@@ -98,6 +99,7 @@ const SavedPhotosScreen = () => {
           {savedPhotos.map((photo, index) => (
             <View key={index} style={styles.photoContainer}>
               <Image source={{ uri: photo.uri }} style={styles.photo} />
+              <Text>Caption: {photo.caption}</Text>
               <TouchableOpacity onPress={() => openModal(photo)}>
                 <Text>Show Location</Text>
               </TouchableOpacity>

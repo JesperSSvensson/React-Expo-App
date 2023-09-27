@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Alert,
   ImageBackground,
+  TextInput,
 } from 'react-native';
 import { Camera } from 'expo-camera';
 import { CameraType } from 'expo-image-picker';
@@ -18,7 +19,7 @@ import MapView, { Marker } from 'react-native-maps';
 interface CameraProps {
   photo: any;
   retakePicture: () => void;
-  savePhoto: () => void;
+  savePhoto: (caption: string) => void;
   toggleCameraType: () => void;
   flashMode: () => void;
   location: LocationObject | null;
@@ -44,7 +45,6 @@ const CameraScreen = () => {
         Alert.alert('Access to location denied.');
       }
     }
-
     getLocationAsync();
   }, []);
 
@@ -63,16 +63,13 @@ const CameraScreen = () => {
     if (cameraRef.current) {
       const photo: any = await cameraRef.current.takePictureAsync();
       console.log(photo);
-
       setPreviewVisible(true);
       setCapturedImage(photo);
-      
-
       console.log("location", location);
     }
   };
 
-  const savePhoto = async () => {
+  const savePhoto = async (caption: string) => {
     if (capturedImage) {
       try {
         const timestamp = new Date().getTime();
@@ -82,6 +79,7 @@ const CameraScreen = () => {
           ...capturedImage,
           timestamp: timestamp,
           location: location, 
+          caption: caption,
         };
   
         await AsyncStorage.setItem(key, JSON.stringify(photoWithLocation));
@@ -267,6 +265,7 @@ const styles = StyleSheet.create({
 
 const CameraPreview: React.FC<CameraProps> = ({ photo, retakePicture, savePhoto, location }) => {
   console.log('Photo taken', photo, 'Location:', location);
+  const [textInput, setTextInput] = useState("");
   return (
     <View
       style={{
@@ -290,6 +289,17 @@ const CameraPreview: React.FC<CameraProps> = ({ photo, retakePicture, savePhoto,
             justifyContent: 'flex-end',
           }}
         >
+          <TextInput
+            placeholder="Add a caption..."
+            value={textInput}
+            onChangeText={(text) => setTextInput(text)}
+            style={{
+              backgroundColor: 'white',
+              padding: 10,
+              marginBottom: 10,
+            }}
+          />
+
           <View
             style={{
               flexDirection: 'row',
@@ -315,7 +325,7 @@ const CameraPreview: React.FC<CameraProps> = ({ photo, retakePicture, savePhoto,
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={savePhoto}
+              onPress={() => savePhoto(textInput)} // Pass the textInput value to the savePhoto function
               style={{
                 width: 130,
                 height: 40,
@@ -338,5 +348,6 @@ const CameraPreview: React.FC<CameraProps> = ({ photo, retakePicture, savePhoto,
     </View>
   );
 };
+
 
 export default CameraScreen;
