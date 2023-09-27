@@ -7,22 +7,27 @@ import {
   StyleSheet,
   Button,
   Alert,
+  Modal,
+  TouchableOpacity,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useFocusEffect } from "@react-navigation/native";
 import { LocationObject } from "expo-location";
-import Maps from './Maps'; 
+import MapView, { Marker } from "react-native-maps";
+import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 
 
 interface SavedPhoto {
   uri: string;
   timestamp: number;
-  location: LocationObject | null; 
+  location: LocationObject | null;
 }
 
 const SavedPhotosScreen = () => {
   const [savedPhotos, setSavedPhotos] = useState<SavedPhoto[]>([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedPhoto, setSelectedPhoto] = useState<SavedPhoto | null>(null);
 
   useFocusEffect(() => {
     loadSavedPhotos();
@@ -70,24 +75,77 @@ const SavedPhotosScreen = () => {
     }
   };
 
+  const openModal = (photo: SavedPhoto) => {
+    setSelectedPhoto(photo);
+    setModalVisible(true);
+  };
 
-  
+  const closeModal = () => {
+    setSelectedPhoto(null);
+    setModalVisible(false);
+  };
 
   return (
     <ScrollView style={styles.container}>
-      <Button onPress={deleteAll} title="Ta bort alla bilder"></Button>
-      {savedPhotos.map((photo, index) => (
-        <View key={index} style={styles.photoContainer}>
-          <Image source={{ uri: photo.uri }} style={styles.photo} />
-          <Text>{photo.location ? `Latitude: ${photo.location.coords.latitude}, Longitude: ${photo.location.coords.longitude}` : "Location not available"}</Text>
-          
-          <Button
-            title="Delete"
-            color="red"
-            onPress={() => deletePhoto(photo)}
-          />
-        </View>
-      ))}
+      <SafeAreaView>
+        
+        <Button onPress={deleteAll} title="Ta bort alla bilder"></Button>
+        {savedPhotos.map((photo, index) => (
+          <View key={index} style={styles.photoContainer}>
+            <Image source={{ uri: photo.uri }} style={styles.photo} />
+            <TouchableOpacity onPress={() => openModal(photo)}>
+              <Text>Show Location</Text>
+            </TouchableOpacity>
+            <Button
+              title="Delete"
+              color="red"
+              onPress={() => deletePhoto(photo)}
+            />
+          </View>
+        ))}
+
+        <Modal
+          visible={modalVisible}
+          transparent={true}
+          animationType="fade"
+          onRequestClose={closeModal}
+        >
+          <View style={styles.modalContainer}>
+            {selectedPhoto && (
+              <MapView
+                style={styles.map}
+                initialRegion={{
+                  latitude: selectedPhoto.location
+                    ? selectedPhoto.location.coords.latitude
+                    : 0,
+                  longitude: selectedPhoto.location
+                    ? selectedPhoto.location.coords.longitude
+                    : 0,
+                  latitudeDelta: 0.02,
+                  longitudeDelta: 0.02,
+                }}
+              >
+                <Marker
+                  coordinate={{
+                    latitude: selectedPhoto.location
+                      ? selectedPhoto.location.coords.latitude
+                      : 0,
+                    longitude: selectedPhoto.location
+                      ? selectedPhoto.location.coords.longitude
+                      : 0,
+                  }}
+                  title={
+                    selectedPhoto.location
+                      ? `Latitude: ${selectedPhoto.location.coords.latitude}, Longitude: ${selectedPhoto.location.coords.longitude}`
+                      : "Location not available"
+                  }
+                />
+              </MapView>
+            )}
+            <Button title="Close" onPress={closeModal} />
+          </View>
+        </Modal>
+      </SafeAreaView>
     </ScrollView>
   );
 };
@@ -105,6 +163,15 @@ const styles = StyleSheet.create({
     height: 200,
     resizeMode: "cover",
     marginBottom: 8,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  map: {
+    width: "100%",
+    height: "90%",
   },
 });
 

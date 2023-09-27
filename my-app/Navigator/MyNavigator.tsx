@@ -3,9 +3,9 @@ import HomeScreen from "../Screens/Home";
 import Login from "../Screens/Login";
 import CameraScreen from "../Screens/Camera";
 import SavedPhotosScreen from "../Screens/Storage";
-import Maps from "../Screens/Maps";
+// import Maps from "../Screens/Maps";
 import Videos from "../Screens/Video";
-import Locations from "../Screens/Locations";
+// import Locations from "../Screens/Locations";
 
 
 export type RootStackParamList = {
@@ -35,9 +35,9 @@ const MyNavigator = () => {
       <Drawer.Screen name="Home" component={HomeScreen} />
       <Drawer.Screen name="Camera" component={CameraScreen}></Drawer.Screen>
       <Drawer.Screen name="Storage" component={SavedPhotosScreen}></Drawer.Screen>
-      <Drawer.Screen name="Maps" component={Maps}></Drawer.Screen>
+      {/* <Drawer.Screen name="Maps" component={Maps}></Drawer.Screen> */}
       <Drawer.Screen name="Videos" component={Videos}></Drawer.Screen>
-      <Drawer.Screen name="Locations" component={Locations}></Drawer.Screen>
+      {/* <Drawer.Screen name="Locations" component={Locations}></Drawer.Screen> */}
     </Drawer.Navigator>
   );
 };
