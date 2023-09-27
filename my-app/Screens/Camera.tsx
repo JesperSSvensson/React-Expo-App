@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useState, useRef, useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   StyleSheet,
   Text,
@@ -8,13 +8,19 @@ import {
   Alert,
   ImageBackground,
   TextInput,
-} from 'react-native';
-import { Camera } from 'expo-camera';
-import { CameraType } from 'expo-image-picker';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Entypo } from '@expo/vector-icons';
-import { LocationObject, requestForegroundPermissionsAsync, getCurrentPositionAsync } from 'expo-location';
-import MapView, { Marker } from 'react-native-maps';
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
+import { Camera } from "expo-camera";
+import { CameraType } from "expo-image-picker";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Entypo } from "@expo/vector-icons";
+import {
+  LocationObject,
+  requestForegroundPermissionsAsync,
+  getCurrentPositionAsync,
+} from "expo-location";
+
 
 interface CameraProps {
   photo: any;
@@ -30,19 +36,19 @@ const CameraScreen = () => {
   const [previewVisible, setPreviewVisible] = useState(false);
   const [capturedImage, setCapturedImage] = useState<any>(null);
   const [cameraType, setCameraType] = useState(Camera.Constants.Type);
-  const [flashMode, setFlashMode] = useState('off');
-  const [iconColor, setIconColor] = useState('white');
+  const [flashMode, setFlashMode] = useState("off");
+  const [iconColor, setIconColor] = useState("white");
   const [location, setLocation] = useState<LocationObject | null>(null);
   const cameraRef = useRef<Camera | null>(null);
 
   useEffect(() => {
     async function getLocationAsync() {
       const { status } = await requestForegroundPermissionsAsync();
-      if (status === 'granted') {
+      if (status === "granted") {
         const location = await getCurrentPositionAsync({});
         setLocation(location);
       } else {
-        Alert.alert('Access to location denied.');
+        Alert.alert("Access to location denied.");
       }
     }
     getLocationAsync();
@@ -51,11 +57,11 @@ const CameraScreen = () => {
   const StartCamera = async () => {
     const { status } = await Camera.requestCameraPermissionsAsync();
     console.log(status);
-    if (status === 'granted') {
+    if (status === "granted") {
       setStartCamera(true);
       setCameraType(CameraType.back);
     } else {
-      Alert.alert('Access denied');
+      Alert.alert("Access denied");
     }
   };
 
@@ -74,14 +80,16 @@ const CameraScreen = () => {
       try {
         const timestamp = new Date().getTime();
         const key = `Pic-Saved-${timestamp}`;
-  
+
         const photoWithLocation = {
           ...capturedImage,
           timestamp: timestamp,
-          location: location, 
+          location: location,
           caption: caption,
+          
         };
-  
+       
+
         await AsyncStorage.setItem(key, JSON.stringify(photoWithLocation));
         console.log("Photo saved successfully!");
         Alert.alert("Photo saved successfully!");
@@ -89,11 +97,14 @@ const CameraScreen = () => {
         console.error("Error saving photo:", error);
         Alert.alert("Failed to save photo.");
       }
+     retakePicture();
     }
   };
 
   const toggleCameraType = () => {
-    setCameraType(current => (current === CameraType.back ? CameraType.front : CameraType.back));
+    setCameraType((current) =>
+      current === CameraType.back ? CameraType.front : CameraType.back
+    );
   };
 
   const retakePicture = () => {
@@ -103,22 +114,22 @@ const CameraScreen = () => {
   };
 
   const handleFlashMode = () => {
-    const newIconColor = iconColor === 'orange' ? 'white' : 'orange';
+    const newIconColor = iconColor === "orange" ? "white" : "orange";
     setIconColor(newIconColor);
 
-    if (flashMode === 'off') {
-      setFlashMode('on');
-    } else if (flashMode === 'on') {
-      setFlashMode('off');
+    if (flashMode === "off") {
+      setFlashMode("on");
+    } else if (flashMode === "on") {
+      setFlashMode("off");
     } else {
-      setFlashMode('auto');
+      setFlashMode("auto");
     }
   };
 
   return (
     <View style={styles.container}>
       {startCamera ? (
-        <View style={{ flex: 1, width: '100%' }}>
+        <View style={{ flex: 1, width: "100%" }}>
           {previewVisible && capturedImage ? (
             <CameraPreview
               photo={capturedImage}
@@ -140,18 +151,18 @@ const CameraScreen = () => {
               <View
                 style={{
                   flex: 1,
-                  width: '100%',
-                  backgroundColor: 'transparent',
-                  flexDirection: 'row',
+                  width: "100%",
+                  backgroundColor: "transparent",
+                  flexDirection: "row",
                 }}
               >
                 <View
                   style={{
-                    position: 'absolute',
-                    left: '5%',
-                    top: '5%',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
+                    position: "absolute",
+                    left: "5%",
+                    top: "5%",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
                   }}
                 >
                   <TouchableOpacity onPress={handleFlashMode}>
@@ -166,11 +177,11 @@ const CameraScreen = () => {
                 </View>
                 <View
                   style={{
-                    position: 'absolute',
-                    right: '5%',
-                    top: '5%',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
+                    position: "absolute",
+                    right: "5%",
+                    top: "5%",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
                   }}
                 >
                   <TouchableOpacity onPress={toggleCameraType}>
@@ -179,26 +190,30 @@ const CameraScreen = () => {
                         fontSize: 10,
                       }}
                     >
-                      <MaterialCommunityIcons name="camera-flip-outline" size={40} color="white" />
+                      <MaterialCommunityIcons
+                        name="camera-flip-outline"
+                        size={40}
+                        color="white"
+                      />
                     </Text>
                   </TouchableOpacity>
                 </View>
                 <View
                   style={{
-                    position: 'absolute',
+                    position: "absolute",
                     bottom: 0,
-                    flexDirection: 'row',
+                    flexDirection: "row",
                     flex: 1,
-                    width: '100%',
+                    width: "100%",
                     padding: 20,
-                    justifyContent: 'space-between',
+                    justifyContent: "space-between",
                   }}
                 >
                   <View
                     style={{
-                      alignSelf: 'center',
+                      alignSelf: "center",
                       flex: 1,
-                      alignItems: 'center',
+                      alignItems: "center",
                     }}
                   >
                     <TouchableOpacity
@@ -208,7 +223,7 @@ const CameraScreen = () => {
                         height: 70,
                         bottom: 0,
                         borderRadius: 35,
-                        backgroundColor: '#fff',
+                        backgroundColor: "#fff",
                       }}
                     />
                   </View>
@@ -221,9 +236,9 @@ const CameraScreen = () => {
         <View
           style={{
             flex: 1,
-            backgroundColor: '#fff',
-            justifyContent: 'center',
-            alignItems: 'center',
+            backgroundColor: "#fff",
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
           <TouchableOpacity
@@ -231,18 +246,18 @@ const CameraScreen = () => {
             style={{
               width: 130,
               borderRadius: 4,
-              backgroundColor: '#14274e',
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
+              backgroundColor: "#14274e",
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
               height: 40,
             }}
           >
             <Text
               style={{
-                color: '#fff',
-                fontWeight: 'bold',
-                textAlign: 'center',
+                color: "#fff",
+                fontWeight: "bold",
+                textAlign: "center",
               }}
             >
               Start Camera
@@ -257,97 +272,114 @@ const CameraScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 
-const CameraPreview: React.FC<CameraProps> = ({ photo, retakePicture, savePhoto, location }) => {
-  console.log('Photo taken', photo, 'Location:', location);
-  const [textInput, setTextInput] = useState("");
-  return (
-    <View
-      style={{
-        backgroundColor: 'transparent',
-        flex: 1,
-        width: '100%',
-        height: '100%',
-      }}
-    >
-      <ImageBackground
-        source={{ uri: photo && photo.uri }}
+const CameraPreview: React.FC<CameraProps> = ({
+    photo,
+    retakePicture,
+    savePhoto,
+    location,
+  }) => {
+    console.log("Photo taken", photo, "Location:", location);
+    const [textInput, setTextInput] = useState("");
+    
+    return (
+      <View
         style={{
+          backgroundColor: "transparent",
           flex: 1,
+          width: "100%",
+          height: "100%",
         }}
       >
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'column',
-            padding: 15,
-            justifyContent: 'flex-end',
-          }}
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior="height"
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
         >
-          <TextInput
-            placeholder="Add a caption..."
-            value={textInput}
-            onChangeText={(text) => setTextInput(text)}
+          <ImageBackground
+            source={{ uri: photo && photo.uri }}
             style={{
-              backgroundColor: 'white',
-              padding: 10,
-              marginBottom: 10,
-            }}
-          />
-
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
+              flex: 1,
             }}
           >
-            <TouchableOpacity
-              onPress={retakePicture}
+            <View
               style={{
-                width: 130,
-                height: 40,
-                alignItems: 'center',
-                borderRadius: 4,
+                flex: 1,
+                flexDirection: "column",
+                padding: 15,
+                justifyContent: "flex-end",
               }}
             >
-              <Text
+              <TextInput
+                placeholder="Add a caption..."
+                value={textInput}
+                onChangeText={(text) => setTextInput(text)}
                 style={{
-                  color: '#fff',
-                  fontSize: 20,
+                  backgroundColor: "white",
+                  padding: 10,
+                  justifyContent: "center",
+                  alignSelf: "stretch",
+                  marginBottom: 10,
+                  borderRadius: 4,
+                }}
+              />
+  
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
                 }}
               >
-                Re-take
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => savePhoto(textInput)} // Pass the textInput value to the savePhoto function
-              style={{
-                width: 130,
-                height: 40,
-                alignItems: 'center',
-                borderRadius: 4,
-              }}
-            >
-              <Text
-                style={{
-                  color: '#fff',
-                  fontSize: 20,
-                }}
-              >
-                Save photo
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </ImageBackground>
-    </View>
-  );
-};
-
-
+                <TouchableOpacity
+                  onPress={retakePicture}
+                  style={{
+                    width: 100,
+                    height: 30,
+                    alignItems: "center",
+                    borderRadius: 4,
+                    backgroundColor: "#333", 
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: "#fff",
+                      fontSize: 20,
+                    }}
+                  >
+                    Re-take
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => savePhoto(textInput)}
+                  style={{
+                    width: 100,
+                    height: 30,
+                    alignItems: "center",
+                    borderRadius: 4,
+                    backgroundColor: "lime", 
+                  }}
+                >
+                  <Text
+                    style={{
+                        flex:1,
+                        justifyContent:"center",
+                      color: "#fff",
+                      fontSize: 20,
+                    }}
+                  >
+                    Save photo
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </ImageBackground>
+        </KeyboardAvoidingView>
+      </View>
+    );
+  };
 export default CameraScreen;

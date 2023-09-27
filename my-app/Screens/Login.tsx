@@ -36,7 +36,6 @@ export default function Login({ navigation }: Props) {
   return (
     <View style={styles.container}>
       <Image source={{ uri }} style={styles.backgroundImage} />
-
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.blurContainer}>
           <BlurView intensity={10} style={styles.blurView} tint="default">
