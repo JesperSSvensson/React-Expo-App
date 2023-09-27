@@ -66,6 +66,7 @@ const CameraScreen = () => {
 
       setPreviewVisible(true);
       setCapturedImage(photo);
+      
 
       console.log("location", location);
     }

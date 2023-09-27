@@ -8,9 +8,12 @@ import {
 } from "react-native";
 import * as LocalAuthentication from "expo-local-authentication";
 import { BlurView } from "expo-blur";
+import { RootStackParamList } from "../Navigator/MyNavigator";
+import { RouteProp } from "@react-navigation/native";
 
 interface Props {
   navigation: any;
+  route: RouteProp<RootStackParamList, "Login">;
 }
 
 export default function Login({ navigation }: Props) {

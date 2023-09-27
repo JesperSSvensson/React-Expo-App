@@ -15,8 +15,12 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useFocusEffect } from "@react-navigation/native";
 import { LocationObject } from "expo-location";
 import MapView, { Marker } from "react-native-maps";
-import { MaterialCommunityIcons } from '@expo/vector-icons'; 
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../Navigator/MyNavigator";
+import Swiper from "react-native-swiper";
 
+export type Props = NativeStackScreenProps<RootStackParamList, "Storage">;
 
 interface SavedPhoto {
   uri: string;
@@ -54,6 +58,7 @@ const SavedPhotosScreen = () => {
     try {
       await AsyncStorage.clear();
       setSavedPhotos([]);
+      console.log("Alla media deleted");
     } catch (e) {
       console.error("Error in deleteAll:", e);
     }
@@ -86,29 +91,30 @@ const SavedPhotosScreen = () => {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <SafeAreaView>
-        
-        <Button onPress={deleteAll} title="Ta bort alla bilder"></Button>
-        {savedPhotos.map((photo, index) => (
-          <View key={index} style={styles.photoContainer}>
-            <Image source={{ uri: photo.uri }} style={styles.photo} />
-            <TouchableOpacity onPress={() => openModal(photo)}>
-              <Text>Show Location</Text>
-            </TouchableOpacity>
-            <Button
-              title="Delete"
-              color="red"
-              onPress={() => deletePhoto(photo)}
-            />
-          </View>
-        ))}
-
+    <SafeAreaView style={{ flex: 1 }}>
+      <View style={styles.container}>
+        <Button onPress={deleteAll} title="Ta bort alla bilder" />
+        <Swiper loop={false}>
+          {savedPhotos.map((photo, index) => (
+            <View key={index} style={styles.photoContainer}>
+              <Image source={{ uri: photo.uri }} style={styles.photo} />
+              <TouchableOpacity onPress={() => openModal(photo)}>
+                <Text>Show Location</Text>
+              </TouchableOpacity>
+              <Button
+                title="Delete"
+                color="red"
+                onPress={() => deletePhoto(photo)}
+              />
+            </View>
+          ))}
+        </Swiper>
         <Modal
           visible={modalVisible}
-          transparent={true}
+          transparent={false}
           animationType="fade"
           onRequestClose={closeModal}
+          presentationStyle="overFullScreen"
         >
           <View style={styles.modalContainer}>
             {selectedPhoto && (
@@ -145,8 +151,8 @@ const SavedPhotosScreen = () => {
             <Button title="Close" onPress={closeModal} />
           </View>
         </Modal>
-      </SafeAreaView>
-    </ScrollView>
+      </View>
+    </SafeAreaView>
   );
 };
 
@@ -160,7 +166,7 @@ const styles = StyleSheet.create({
   },
   photo: {
     width: "100%",
-    height: 200,
+    height: 500,
     resizeMode: "cover",
     marginBottom: 8,
   },
@@ -171,7 +177,7 @@ const styles = StyleSheet.create({
   },
   map: {
     width: "100%",
-    height: "90%",
+    height: "50%",
   },
 });
 
