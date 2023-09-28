@@ -6,6 +6,7 @@ import SavedPhotosScreen from "../Screens/Storage";
 import Videos from "../Screens/Video";
 import { StatusBar } from "expo-status-bar";
 import React from "react";
+import { MaterialIcons } from '@expo/vector-icons'; 
 
 export type RootStackParamList = {
   Home: undefined;
@@ -31,10 +32,30 @@ const MyNavigator = () => {
           name="Login"
           component={Login}
         />
-        <Drawer.Screen name="Home" component={HomeScreen} />
-        <Drawer.Screen name="Camera" component={CameraScreen} />
-        <Drawer.Screen name="Storage" component={SavedPhotosScreen} />
-        <Drawer.Screen name="Videos" component={Videos} />
+        <Drawer.Screen name="Home" component={HomeScreen}  options={{
+            drawerIcon: ({ color }) => (
+              <MaterialIcons name="home" size={24} color={"black"} />
+            ),
+          }}
+        />
+        <Drawer.Screen name="Camera" component={CameraScreen}options={{
+            drawerIcon: ({ color }) => (
+              <MaterialIcons name="camera-alt" size={24} color={"black"} />
+            ),
+          }}
+        />
+        <Drawer.Screen name="Storage" component={SavedPhotosScreen} options={{
+            drawerIcon: ({ color }) => (
+              <MaterialIcons name="storage" size={24} color={"black"} />
+            ),
+          }}
+        />
+        <Drawer.Screen name="Videos" component={Videos} options={{
+            drawerIcon: ({ color }) => (
+              <MaterialIcons name="video-library" size={24} color={"black"} />
+            ),
+          }}
+        />
       </Drawer.Navigator>
     </>
   );
