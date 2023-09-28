@@ -16,7 +16,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import { LocationObject } from "expo-location";
 import MapView, { Marker } from "react-native-maps";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { MaterialIcons } from '@expo/vector-icons'; 
+import { MaterialIcons } from "@expo/vector-icons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../Navigator/MyNavigator";
 import Swiper from "react-native-swiper";
@@ -96,17 +96,28 @@ const SavedPhotosScreen = () => {
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
         <Button onPress={deleteAll} title="Ta bort alla bilder" />
-        <Swiper loop={false}    >
+        <Swiper loop={false}>
           {savedPhotos.map((photo, index) => (
             <View key={index} style={styles.photoContainer}>
               <Image source={{ uri: photo.uri }} style={styles.photo} />
               <Text>{photo.caption}</Text>
+              <Text>{new Date(photo.timestamp).toLocaleString()}</Text>
+              
               <View style={styles.iconContainer}>
                 <TouchableOpacity onPress={() => openModal(photo)}>
-                  <MaterialCommunityIcons name="google-maps" size={40} color="black" />
+                  <MaterialCommunityIcons
+                    name="google-maps"
+                    size={40}
+                    color="black"
+                  />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => deletePhoto(photo)}>
-                  <MaterialIcons style={styles.icon} name="delete-forever" size={40} color="red" />
+                  <MaterialIcons
+                    style={styles.icon}
+                    name="delete-forever"
+                    size={40}
+                    color="red"
+                  />
                 </TouchableOpacity>
               </View>
             </View>
@@ -162,19 +173,18 @@ const SavedPhotosScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 15,
+   
   },
   photoContainer: {
     flex: 1,
     marginBottom: 16,
   },
   photo: {
-    width: "100%",
-    height: 500,
+   flex: 1,
     resizeMode: "cover",
     marginBottom: 8,
   },
- 
+
   modalContainer: {
     flex: 1,
     justifyContent: "center",
@@ -185,11 +195,11 @@ const styles = StyleSheet.create({
     height: "50%",
   },
   iconContainer: {
-    flexDirection: 'row', 
-    justifyContent: 'flex-end', 
+    flexDirection: "row",
+    justifyContent: "flex-end",
   },
   icon: {
-    marginLeft: 16, 
+    marginLeft: 16,
   },
 });
 

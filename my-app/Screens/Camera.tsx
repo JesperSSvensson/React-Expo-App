@@ -21,7 +21,6 @@ import {
   getCurrentPositionAsync,
 } from "expo-location";
 
-
 interface CameraProps {
   photo: any;
   retakePicture: () => void;
@@ -72,6 +71,7 @@ const CameraScreen = () => {
       console.log(photo);
       setPreviewVisible(true);
       setCapturedImage(photo);
+
       console.log("location", location);
     }
   };
@@ -87,15 +87,16 @@ const CameraScreen = () => {
           timestamp: timestamp,
           location: location,
           caption: caption,
+         
         };
-       
+
         await AsyncStorage.setItem(key, JSON.stringify(photoWithLocation));
         console.log("Photo saved successfully!");
       } catch (error) {
         console.error("Error saving photo:", error);
       }
       setStartCamera(false);
-     retakePicture();
+      retakePicture();
     }
   };
 
@@ -238,8 +239,7 @@ const CameraScreen = () => {
             justifyContent: "center",
             alignItems: "center",
           }}
-        >
-        </View>
+        ></View>
       )}
     </View>
   );
@@ -254,110 +254,116 @@ const styles = StyleSheet.create({
   },
 });
 
+// console.log("Photo taken", photo, "Location:", location);
 const CameraPreview: React.FC<CameraProps> = ({
-    photo,
-    retakePicture,
-    savePhoto,
-    location,
-  }) => {
-    console.log("Photo taken", photo, "Location:", location);
-    const [textInput, setTextInput] = useState("");
-    
-    return (
-      <View
-        style={{
-          backgroundColor: "transparent",
-          flex: 1,
-          width: "100%",
-          height: "100%",
-        }}
+  photo,
+  retakePicture,
+  savePhoto,
+  location,
+}) => {
+  const [textInput, setTextInput] = useState("");
+
+  return (
+    <View
+      style={{
+        backgroundColor: "transparent",
+        flex: 1,
+        width: "100%",
+        height: "100%",
+      }}
+    >
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior="height"
+        keyboardVerticalOffset={Platform.OS === "ios" ? 40 : 0}
       >
-        <KeyboardAvoidingView
-          style={{ flex: 1 }}
-          behavior="height"
-          keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
+        <ImageBackground
+          source={{ uri: photo && photo.uri }}
+          style={{
+            flex: 1,
+          }}
         >
-          <ImageBackground
-            source={{ uri: photo && photo.uri }}
+          <View
             style={{
               flex: 1,
+              flexDirection: "column",
+              padding: 10,
+              justifyContent: "flex-end",
             }}
           >
-            <View
+            <TextInput
+              placeholder="Lägg till en kommentar..."
+              value={textInput}
+              onChangeText={(text) => setTextInput(text)}
+              autoCorrect={true}
               style={{
-                flex: 1,
-                flexDirection: "column",
-                padding: 15,
-                justifyContent: "flex-end",
+                backgroundColor: "lightgrey",
+                borderStyle: "solid",
+                padding: 10,
+                justifyContent: "center",
+                alignSelf: "stretch",
+                marginBottom: 5,
+                borderRadius: 30,
+              }}
+            />
+          </View>
+
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-around",
+              marginBottom: 10,
+            }}
+          >
+            <TouchableOpacity
+              onPress={retakePicture}
+              style={{
+                width: 100,
+                height: 30,
+                alignItems: "center",
+                borderRadius: 30,
+                backgroundColor: "#333",
               }}
             >
-              <TextInput
-                placeholder="Lägg till en kommentar..."
-                value={textInput}
-                onChangeText={(text) => setTextInput(text)}
+              <Text
                 style={{
-                  backgroundColor: "lightgrey",
-                  borderStyle: "solid",
-                  
-                  padding: 10,
+                  flex: 1,
                   justifyContent: "center",
-                  alignSelf: "stretch",
-                  marginBottom: 10,
-                  borderRadius: 4,
-                }}
-              />
-  
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
+                  color: "#fff",
+                  fontSize: 20,
+                  marginTop:5,
+                
                 }}
               >
-                <TouchableOpacity
-                  onPress={retakePicture}
-                  style={{
-                    width: 100,
-                    height: 30,
-                    alignItems: "center",
-                    borderRadius: 4,
-                    backgroundColor: "#333", 
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: "#fff",
-                      fontSize: 20,
-                    }}
-                  >
-                    Re-take
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => savePhoto(textInput)}
-                  style={{
-                    width: 100,
-                    height: 30,
-                    alignItems: "center",
-                    borderRadius: 4,
-                    backgroundColor: "lime", 
-                  }}
-                >
-                  <Text
-                    style={{
-                        flex:1,
-                        justifyContent:"center",
-                      color: "#fff",
-                      fontSize: 20,
-                    }}
-                  >
-                    Save photo
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </ImageBackground>
-        </KeyboardAvoidingView>
-      </View>
-    );
-  };
+                Re-take
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => savePhoto(textInput)}
+              style={{
+                width: 100,
+                height: 30,
+                alignItems: "center",
+                borderRadius: 30,
+                backgroundColor: "lime",
+              }}
+            >
+              <Text
+                style={{
+                  flex: 1,
+                  justifyContent: "center",
+                  color: "#fff",
+                  fontSize: 20,
+                  marginTop:5,
+                }}
+              >
+                Save photo
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </ImageBackground>
+      </KeyboardAvoidingView>
+    </View>
+  );
+};
 export default CameraScreen;
