@@ -52,6 +52,7 @@ const CameraScreen = () => {
       }
     }
     getLocationAsync();
+    StartCamera();
   }, []);
 
   const StartCamera = async () => {
@@ -86,17 +87,14 @@ const CameraScreen = () => {
           timestamp: timestamp,
           location: location,
           caption: caption,
-          
         };
        
-
         await AsyncStorage.setItem(key, JSON.stringify(photoWithLocation));
         console.log("Photo saved successfully!");
-        Alert.alert("Photo saved successfully!");
       } catch (error) {
         console.error("Error saving photo:", error);
-        Alert.alert("Failed to save photo.");
       }
+      setStartCamera(false);
      retakePicture();
     }
   };
@@ -236,33 +234,11 @@ const CameraScreen = () => {
         <View
           style={{
             flex: 1,
-            backgroundColor: "#fff",
+            backgroundColor: "green",
             justifyContent: "center",
             alignItems: "center",
           }}
         >
-          <TouchableOpacity
-            onPress={StartCamera}
-            style={{
-              width: 130,
-              borderRadius: 4,
-              backgroundColor: "#14274e",
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-              height: 40,
-            }}
-          >
-            <Text
-              style={{
-                color: "#fff",
-                fontWeight: "bold",
-                textAlign: "center",
-              }}
-            >
-              Start Camera
-            </Text>
-          </TouchableOpacity>
         </View>
       )}
     </View>
@@ -316,11 +292,13 @@ const CameraPreview: React.FC<CameraProps> = ({
               }}
             >
               <TextInput
-                placeholder="Add a caption..."
+                placeholder="Lägg till en kommentar..."
                 value={textInput}
                 onChangeText={(text) => setTextInput(text)}
                 style={{
-                  backgroundColor: "white",
+                  backgroundColor: "lightgrey",
+                  borderStyle: "solid",
+                  
                   padding: 10,
                   justifyContent: "center",
                   alignSelf: "stretch",
