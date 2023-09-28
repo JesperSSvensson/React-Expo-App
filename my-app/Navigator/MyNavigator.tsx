@@ -33,25 +33,25 @@ const MyNavigator = () => {
           component={Login}
         />
         <Drawer.Screen name="Home" component={HomeScreen}  options={{
-            drawerIcon: ({ color }) => (
+            drawerIcon: () => (
               <MaterialIcons name="home" size={24} color={"black"} />
             ),
           }}
         />
         <Drawer.Screen name="Camera" component={CameraScreen}options={{
-            drawerIcon: ({ color }) => (
+            drawerIcon: () => (
               <MaterialIcons name="camera-alt" size={24} color={"black"} />
             ),
           }}
         />
         <Drawer.Screen name="Storage" component={SavedPhotosScreen} options={{
-            drawerIcon: ({ color }) => (
+            drawerIcon: () => (
               <MaterialIcons name="storage" size={24} color={"black"} />
             ),
           }}
         />
         <Drawer.Screen name="Videos" component={Videos} options={{
-            drawerIcon: ({ color }) => (
+            drawerIcon: () => (
               <MaterialIcons name="video-library" size={24} color={"black"} />
             ),
           }}
