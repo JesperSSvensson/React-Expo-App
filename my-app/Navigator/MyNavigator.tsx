@@ -3,12 +3,11 @@ import HomeScreen from "../Screens/Home";
 import Login from "../Screens/Login";
 import CameraScreen from "../Screens/Camera";
 import SavedPhotosScreen from "../Screens/Storage";
-import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { useState } from "react";
 import { MaterialIcons } from '@expo/vector-icons'; 
 import Videos from "../Screens/Video";
-import { View } from "react-native";
-import { Image } from "react-native";
+import { SavedPhoto } from '../Screens/Storage';
+
 
 export type RootStackParamList = {
   Home: undefined;
@@ -21,6 +20,7 @@ export type RootStackParamList = {
 const Drawer = createDrawerNavigator<RootStackParamList>();
 
 const MyNavigator = () => {
+  const [savedPhotos, setSavedPhotos] = useState<SavedPhoto[]>([]);
   return (
     <>
      <Drawer.Navigator
@@ -75,6 +75,7 @@ const MyNavigator = () => {
             ),
           }}
         />
+           
       </Drawer.Navigator>
     </>
   );

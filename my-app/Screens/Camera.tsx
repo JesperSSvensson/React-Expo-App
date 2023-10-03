@@ -13,8 +13,8 @@ import {
   getCurrentPositionAsync,
 } from "expo-location";
 
-import CameraPreview from "../Utils/CameraPreview";
-import CameraControls from "../Utils/CameraControls";
+import CameraPreview from "../Components/CameraPreview";
+import CameraControls from "../Components/CameraControls";
 
 const CameraScreen = () => {
   const [startCamera, setStartCamera] = useState(false);
@@ -57,7 +57,7 @@ const CameraScreen = () => {
       console.log(photo);
       setPreviewVisible(true);
       setCapturedImage(photo);
-
+      
       console.log("location", location);
     }
   };
@@ -67,15 +67,14 @@ const CameraScreen = () => {
       try {
         const timestamp = new Date().getTime();
         const key = `Pic-Saved-${timestamp}`;
-
         const photoWithLocation = {
           ...capturedImage,
           timestamp: timestamp,
           location: location,
           caption: caption,
         };
-
         await AsyncStorage.setItem(key, JSON.stringify(photoWithLocation));
+        Alert.alert("Bild sparad")
         console.log("Photo saved successfully!");
       } catch (error) {
         console.error("Error saving photo:", error);
@@ -141,7 +140,7 @@ const CameraScreen = () => {
       ) : (
         <View
           style={{
-            flex: 1,
+            flex: 2,
             backgroundColor: "green",
             justifyContent: "center",
             alignItems: "center",
