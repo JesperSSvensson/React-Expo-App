@@ -175,11 +175,17 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "white",
     marginBottom: 20,
+    textShadowColor: "black", 
+    textShadowOffset: { width: -2, height: -2 }, 
+    textShadowRadius: 2, 
   },
   subtitleText: {
     alignItems: "center",
     fontSize: 20,
     color: "white",
+    textShadowColor: "#ff22a9", 
+    textShadowOffset: { width: -2, height: -2 }, 
+    textShadowRadius: 2, 
   },
 });
 
