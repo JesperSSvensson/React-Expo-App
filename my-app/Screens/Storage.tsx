@@ -21,6 +21,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../Navigator/MyNavigator";
 import Swiper from "react-native-swiper";
+import { BlurView } from "expo-blur";
 
 const backgroundImageUri =
   "https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2670&q=80";
@@ -96,12 +97,12 @@ const SavedPhotosScreen = () => {
           <Swiper loop={false} activeDotColor="white" dotColor="orange">
             {savedPhotos.map((photo, index) => (
               <View key={index} style={styles.photoContainer}>
-                <View style={styles.textContainer}>
+                <BlurView intensity={5} style={styles.textBlurContainer}>
                   <Text style={styles.textdate}>
                     {new Date(photo.timestamp).toLocaleString()}
                   </Text>
                   <Text style={styles.textcaption}>{photo.caption}</Text>
-                </View>
+                </BlurView>
                 <Image source={{ uri: photo.uri }} style={styles.photo} />
                 <View style={styles.iconContainerWrapper}>
                   <View>
@@ -207,9 +208,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 10,
   },
-  textContainer: {
+  textBlurContainer: {
     flexDirection: "column-reverse",
     justifyContent: "center",
+    
   },
   textdate: {
     color: "white",

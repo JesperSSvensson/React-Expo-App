@@ -6,8 +6,6 @@ import SavedPhotosScreen from "../Screens/Storage";
 import React, { useState } from "react";
 import { MaterialIcons } from '@expo/vector-icons'; 
 import Videos from "../Screens/Video";
-import { SavedPhoto } from '../Screens/Storage';
-
 
 export type RootStackParamList = {
   Home: undefined;
@@ -20,25 +18,23 @@ export type RootStackParamList = {
 const Drawer = createDrawerNavigator<RootStackParamList>();
 
 const MyNavigator = () => {
-  const [savedPhotos, setSavedPhotos] = useState<SavedPhoto[]>([]);
   return (
     <>
-     <Drawer.Navigator
+      <Drawer.Navigator
         screenOptions={{
           headerStyle: {
-            backgroundColor: 'black', 
+            backgroundColor: 'black',
           },
           drawerStyle: {
-            backgroundColor:'black',
+            backgroundColor: 'black',
           },
-          headerTintColor: 'orange',
-          drawerActiveTintColor:'orange',
-          drawerInactiveTintColor:'white',
+          headerTintColor: '#ff6eeb',
+          drawerActiveTintColor: '#ff6eeb',
+          drawerInactiveTintColor: 'white',
           headerTitleStyle: {
             fontWeight: "800",
           },
         }}
-    
       >
         <Drawer.Screen
           options={{
@@ -46,36 +42,45 @@ const MyNavigator = () => {
             swipeEnabled: false,
             headerShown: false,
           }}
-          
           name="Login"
           component={Login}
-          />
-        <Drawer.Screen  name="Home" component={HomeScreen}  options={{
-         
-          drawerIcon: () => (
-              <MaterialIcons name="home" size={24} color={"orange"} />
-              ), 
-            }}
-            />
-        <Drawer.Screen name="Camera" component={CameraScreen}options={{
-          drawerIcon: () => (
-            <MaterialIcons name="camera-alt" size={24} color={"orange"} />
-            ),
-          }}
-          />
-        <Drawer.Screen name="Storage" component={SavedPhotosScreen} options={{
-          drawerIcon: () => (
-            <MaterialIcons name="storage" size={24} color={"orange"} />
-            ),
-          }}
-          />
-           <Drawer.Screen name="Videos" component={Videos} options={{
+        />
+        <Drawer.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{
             drawerIcon: () => (
-              <MaterialIcons name="video-library" size={24} color={"orange"} />
+              <MaterialIcons name="home" size={24} color={"#ff6eeb"} />
             ),
           }}
         />
-           
+        <Drawer.Screen
+          name="Camera"
+          component={CameraScreen}
+          options={{
+            drawerIcon: () => (
+              <MaterialIcons name="camera-alt" size={24} color={"#ff6eeb"} /> 
+            ),
+          }}
+        />
+        <Drawer.Screen
+          name="Storage"
+          component={SavedPhotosScreen}
+          options={{
+            drawerIcon: () => (
+              <MaterialIcons name="storage" size={24} color={"#ff6eeb"} /> 
+            ),
+          }}
+        />
+        <Drawer.Screen
+          name="Videos"
+          component={Videos}
+          options={{
+            drawerIcon: () => (
+              <MaterialIcons name="video-library" size={24} color={"#ff6eeb"} /> 
+            ),
+          }}
+        />
       </Drawer.Navigator>
     </>
   );
