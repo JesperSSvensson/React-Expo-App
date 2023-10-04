@@ -1,17 +1,13 @@
 import React, { useEffect } from "react";
-import { View, Text, StyleSheet, ImageBackground } from "react-native";
+import { BackgroundImageUri } from "../Utils/BackgroundImage";
+import { View, StyleSheet, ImageBackground } from "react-native";
 import Animated, {
   useSharedValue,
   withSpring,
   useAnimatedStyle,
   interpolate,
-  withDelay,
 } from "react-native-reanimated";
-
 import { MaterialIcons } from "@expo/vector-icons";
-
-const backgroundImageUri =
-  "https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2670&q=80";
 
 const HomeScreen: React.FC = () => {
   const welcomeOpacity = useSharedValue(0);
@@ -35,7 +31,7 @@ const HomeScreen: React.FC = () => {
     );
 
     delay(
-      2000, 
+      2000,
       () =>
         (savePicturesOpacity.value = withSpring(1, {
           damping: 1,
@@ -44,7 +40,7 @@ const HomeScreen: React.FC = () => {
     );
 
     delay(
-      3000, 
+      3000,
       () =>
         (seeLocationOpacity.value = withSpring(1, {
           damping: 1,
@@ -65,7 +61,7 @@ const HomeScreen: React.FC = () => {
 
   return (
     <ImageBackground
-      source={{ uri: backgroundImageUri }}
+      source={{ uri: BackgroundImageUri }}
       style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
     >
       <View style={styles.textContainer}>
@@ -175,17 +171,17 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "white",
     marginBottom: 20,
-    textShadowColor: "black", 
-    textShadowOffset: { width: -2, height: -2 }, 
-    textShadowRadius: 2, 
+    textShadowColor: "black",
+    textShadowOffset: { width: -2, height: -2 },
+    textShadowRadius: 2,
   },
   subtitleText: {
     alignItems: "center",
     fontSize: 20,
     color: "white",
-    textShadowColor: "#ff22a9", 
-    textShadowOffset: { width: -2, height: -2 }, 
-    textShadowRadius: 2, 
+    textShadowColor: "#ff22a9",
+    textShadowOffset: { width: -2, height: -2 },
+    textShadowRadius: 2,
   },
 });
 

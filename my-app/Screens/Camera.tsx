@@ -1,10 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {
-  StyleSheet,
-  View,
-  Alert,
-} from "react-native";
+import { StyleSheet, View, Alert } from "react-native";
 import { Camera } from "expo-camera";
 import { CameraType } from "expo-image-picker";
 import {
@@ -57,7 +53,7 @@ const CameraScreen = () => {
       console.log(photo);
       setPreviewVisible(true);
       setCapturedImage(photo);
-      
+
       console.log("location", location);
     }
   };
@@ -74,7 +70,7 @@ const CameraScreen = () => {
           caption: caption,
         };
         await AsyncStorage.setItem(key, JSON.stringify(photoWithLocation));
-        Alert.alert("Bild sparad")
+        Alert.alert("Bild sparad");
         console.log("Photo saved successfully!");
       } catch (error) {
         console.error("Error saving photo:", error);

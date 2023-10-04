@@ -5,11 +5,13 @@ import {
   StyleSheet,
   ScrollView,
   Image,
+  ImageBackground,
 } from "react-native";
 import * as LocalAuthentication from "expo-local-authentication";
 import { BlurView } from "expo-blur";
 import { RootStackParamList } from "../Navigator/MyNavigator";
 import { RouteProp } from "@react-navigation/native";
+import { BackgroundImageUri } from "../Utils/BackgroundImage";
 
 interface Props {
   navigation: any;
@@ -34,27 +36,25 @@ export default function Login({ navigation }: Props) {
     }
   };
 
-  const uri =
-    "https://images.pexels.com/photos/7125282/pexels-photo-7125282.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2";
-
   return (
-  
-      <View style={styles.container}>
-        <Image source={{ uri }} style={styles.backgroundImage} />
-        <ScrollView contentContainerStyle={styles.scrollViewContent}>
-          <View style={styles.blurContainer}>
-            <BlurView intensity={10} style={styles.blurView} tint="default">
-              <Text style={styles.textContainer}>Välkommen</Text>
-              <Button
-                color="white"
-                title="Logga in"
-                onPress={getAccesWithPinCode}
-              />
-            </BlurView>
-          </View>
-        </ScrollView>
-      </View>
-  
+    <View style={styles.container}>
+      <ImageBackground
+        source={{ uri: BackgroundImageUri }}
+        style={styles.backgroundImage}
+      />
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+        <View style={styles.blurContainer}>
+          <BlurView intensity={10} style={styles.blurView} tint="default">
+            <Text style={styles.textContainer}>Välkommen</Text>
+            <Button
+              color="white"
+              title="Logga in"
+              onPress={getAccesWithPinCode}
+            />
+          </BlurView>
+        </View>
+      </ScrollView>
+    </View>
   );
 }
 

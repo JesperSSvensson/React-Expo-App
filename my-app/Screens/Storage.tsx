@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -22,13 +22,12 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../Navigator/MyNavigator";
 import Swiper from "react-native-swiper";
 import { BlurView } from "expo-blur";
+import { BackgroundImageUri } from "../Utils/BackgroundImage";
 
-const backgroundImageUri =
-  "https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2670&q=80";
 
 export type Props = NativeStackScreenProps<RootStackParamList, "Storage">;
 
-export interface SavedPhoto {
+interface SavedPhoto {
   uri: string;
   timestamp: number;
   location: LocationObject | null;
@@ -47,14 +46,18 @@ const SavedPhotosScreen = () => {
   const loadSavedPhotos = async () => {
     try {
       const keys = await AsyncStorage.getAllKeys();
-      const photoKeys: any = keys.filter((key) => key.startsWith("Pic-Saved-"));
+      const photoKeys = keys.filter((key) => key.startsWith("Pic-Saved-"));
       const loadedPhotos = await AsyncStorage.multiGet(photoKeys);
 
-      const parsedPhotos: SavedPhoto[] = loadedPhotos
-        .map(([_, value]) => value)
-        .filter((value) => value !== null)
-        .map((value) => JSON.parse(value!) as SavedPhoto);
+      const parsedPhotos: SavedPhoto[] = [];
 
+      loadedPhotos.forEach(([_, value]) => {
+        if (value !== null) {
+          const parsedValue = JSON.parse(value) as SavedPhoto;
+          parsedPhotos.push(parsedValue);
+        }
+      });
+      parsedPhotos.sort((a, b) => b.timestamp - a.timestamp);
       setSavedPhotos(parsedPhotos);
     } catch (error) {
       console.error("Error loading saved photos:", error);
@@ -89,7 +92,7 @@ const SavedPhotosScreen = () => {
 
   return (
     <ImageBackground
-      source={{ uri: backgroundImageUri }}
+      source={{ uri: BackgroundImageUri }}
       style={styles.backgroundImage}
     >
       <SafeAreaView style={{ flex: 1 }}>
@@ -211,7 +214,6 @@ const styles = StyleSheet.create({
   textBlurContainer: {
     flexDirection: "column-reverse",
     justifyContent: "center",
-    
   },
   textdate: {
     color: "white",

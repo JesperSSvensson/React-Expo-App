@@ -3,7 +3,7 @@ import HomeScreen from "../Screens/Home";
 import Login from "../Screens/Login";
 import CameraScreen from "../Screens/Camera";
 import SavedPhotosScreen from "../Screens/Storage";
-import React, { useState } from "react";
+import React from "react";
 import { MaterialIcons } from '@expo/vector-icons'; 
 import Videos from "../Screens/Video";
 
