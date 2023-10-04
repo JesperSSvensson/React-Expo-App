@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
   },
   photo: {
     flex: 1,
-    resizeMode: "stretch",
+    resizeMode: "cover",
     marginBottom: 8,
     borderRadius: 20,
   },
