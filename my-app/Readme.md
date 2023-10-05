@@ -5,18 +5,19 @@ PhotoWiz
 Är en mobilapp utvecklad med React Native och TypeScript som gör det enkelt att ta bilder och spara dem med platsinformation. Appen erbjuder också en säker inloggning med pinkod för att skydda dina bilder.
 
 ## Hur projektet startas
-Du startar programmet genom att köra 'npm start' i terminalen. Funkar ej med Android Studio. 
+Du startar programmet genom att köra 'npm start' i terminalen. Fick det ej att funka med android studio. Om du vill testa appen så använder du expo go.  
 
 ## Komponenter Expo
 Expo komponenter
 - LocalAuthentication
 - AsyncStorage
-- LottieView?
+- LottieView
 - BlurView
 - Location
 - Camera
 - Reanimated
 - Video 
+- Statusbar
 
 ## Komponenter RN
 ReactNative komponenter
