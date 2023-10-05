@@ -6,13 +6,12 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import { BlurView } from "expo-blur";
-import LottieView from "lottie-react-native"; 
+import { BlurView } from "expo-blur"; 
 import * as LocalAuthentication from "expo-local-authentication";
 import { RootStackParamList } from "../Navigator/MyNavigator";
 import { RouteProp } from "@react-navigation/native";
-import { BackgroundImageUri } from "../Utils/BackgroundImage";
-import LottieAnimation from "../Utils/LottieAnimation";
+import { BackgroundImageUri } from "../Components/BackgroundImage";
+import LottieAnimation from "../Components/LottieAnimation";
 
 interface Props {
   navigation: any;

@@ -18,7 +18,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../Navigator/MyNavigator";
 import Swiper from "react-native-swiper";
 import { BlurView } from "expo-blur";
-import { BackgroundImageUri } from "../Utils/BackgroundImage";
+import { BackgroundImageUri } from "../Components/BackgroundImage";
 import PhotoLocationView from "../Components/PhotoLocationView";
 
 export type Props = NativeStackScreenProps<RootStackParamList, "Storage">;
@@ -69,6 +69,7 @@ const SavedPhotosScreen = () => {
           (photo) => photo.timestamp !== photoToDelete.timestamp
         )
       );
+      Alert.alert("Photo has been deleted")
       console.log("Photo deleted successfully! ");
     } catch (error) {
       console.error("Error deleting photo:", error);

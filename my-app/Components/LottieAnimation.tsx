@@ -17,7 +17,7 @@ const LottieAnimation = () => {
   return (
     <LottieView
       ref={lottieRef}
-      source={require("../Utils/Animation - 1696448678389.json")}
+      source={require("../assets/Animation - 1696448678389.json")}
       autoPlay={true}
       style={styles.animation}
     />

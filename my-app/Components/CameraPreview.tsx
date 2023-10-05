@@ -7,6 +7,7 @@ import {
   Text,
   KeyboardAvoidingView,
   Platform,
+  StyleSheet
 } from "react-native";
 
 interface CameraPreviewProps {
@@ -15,18 +16,11 @@ interface CameraPreviewProps {
   savePhoto: (caption: string) => void;
 }
 
-function CameraPreview({photo,retakePicture,savePhoto, }: CameraPreviewProps) {
+function CameraPreview({ photo, retakePicture, savePhoto }: CameraPreviewProps) {
   const [textInput, setTextInput] = useState("");
 
   return (
-    <View
-      style={{
-        backgroundColor: "transparent",
-        flex: 1,
-        width: "100%",
-        height: "100%",
-      }}
-    >
+    <View style={styles.container}>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior="height"
@@ -34,85 +28,30 @@ function CameraPreview({photo,retakePicture,savePhoto, }: CameraPreviewProps) {
       >
         <ImageBackground
           source={{ uri: photo && photo.uri }}
-          style={{
-            flex: 1,
-          }}
+          style={{ flex: 1 }}
         >
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "column",
-              padding: 10,
-              justifyContent: "flex-end",
-            }}
-          >
+          <View style={styles.textContainer}>
             <TextInput
               placeholder="Lägg till en kommentar..."
               value={textInput}
               onChangeText={(text) => setTextInput(text)}
               autoCorrect={true}
-              style={{
-                backgroundColor: "lightgrey",
-                borderStyle: "solid",
-                padding: 10,
-                justifyContent: "center",
-                alignSelf: "stretch",
-                marginBottom: 5,
-                borderRadius: 30,
-              }}
+              style={styles.textInput}
             />
           </View>
 
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-around",
-              marginBottom: 10,
-            }}
-          >
+          <View style={styles.buttonContainer}>
             <TouchableOpacity
               onPress={retakePicture}
-              style={{
-                width: 100,
-                height: 30,
-                alignItems: "center",
-                borderRadius: 30,
-                backgroundColor: "#333",
-              }}
+              style={styles.retakeButton}
             >
-              <Text
-                style={{
-                  flex: 1,
-                  justifyContent: "center",
-                  color: "#fff",
-                  fontSize: 20,
-                  marginTop: 5,
-                }}
-              >
-                Re-take
-              </Text>
+              <Text style={styles.buttonText}>Re-take</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => savePhoto(textInput)}
-              style={{
-                width: 100,
-                height: 30,
-                alignItems: "center",
-                borderRadius: 30,
-                backgroundColor: "lime",
-              }}
+              style={styles.saveButton}
             >
-              <Text
-                style={{
-                  flex: 1,
-                  justifyContent: "center",
-                  color: "#fff",
-                  fontSize: 20,
-                  marginTop: 5,
-                }}
-              >
-                Save photo
-              </Text>
+              <Text style={styles.buttonText}>Save photo</Text>
             </TouchableOpacity>
           </View>
         </ImageBackground>
@@ -120,5 +59,55 @@ function CameraPreview({photo,retakePicture,savePhoto, }: CameraPreviewProps) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "transparent",
+    flex: 1,
+    width: "100%",
+    height: "100%",
+  },
+  textContainer: {
+    flex: 1,
+    flexDirection: "column",
+    padding: 10,
+    justifyContent: "flex-end",
+  },
+  textInput: {
+    backgroundColor: "lightgrey",
+    borderStyle: "solid",
+    padding: 10,
+    justifyContent: "center",
+    alignSelf: "stretch",
+    marginBottom: 5,
+    borderRadius: 30,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    marginBottom: 10,
+  },
+  retakeButton: {
+    width: 100,
+    height: 30,
+    alignItems: "center",
+    borderRadius: 30,
+    backgroundColor: "#333",
+  },
+  saveButton: {
+    width: 100,
+    height: 30,
+    alignItems: "center",
+    borderRadius: 30,
+    backgroundColor: "lime",
+  },
+  buttonText: {
+    flex: 1,
+    justifyContent: "center",
+    color: "#fff",
+    fontSize: 20,
+    marginTop: 5,
+  },
+});
 
 export default CameraPreview;

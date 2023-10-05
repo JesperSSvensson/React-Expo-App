@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { BackgroundImageUri } from "../Utils/BackgroundImage";
+import { BackgroundImageUri } from "../Components/BackgroundImage";
 import { View, StyleSheet, ImageBackground } from "react-native";
 import Animated, {
   useSharedValue,
@@ -9,7 +9,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { MaterialIcons } from "@expo/vector-icons";
 
-const HomeScreen: React.FC = () => {
+const HomeScreen  = () => {
   const welcomeOpacity = useSharedValue(0);
   const takePicturesOpacity = useSharedValue(0);
   const savePicturesOpacity = useSharedValue(0);
