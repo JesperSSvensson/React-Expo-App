@@ -179,9 +179,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     fontSize: 20,
     color: "white",
-    textShadowColor: "#ff22a9",
+    textShadowColor: "black",
     textShadowOffset: { width: -2, height: -2 },
-    textShadowRadius: 2,
+    textShadowRadius: 1,
   },
 });
 

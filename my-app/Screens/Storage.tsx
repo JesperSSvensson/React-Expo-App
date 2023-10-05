@@ -3,11 +3,8 @@ import {
   View,
   Text,
   Image,
-  ScrollView,
   StyleSheet,
-  Button,
   Alert,
-  Modal,
   ImageBackground,
   TouchableOpacity,
 } from "react-native";
@@ -15,7 +12,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useFocusEffect } from "@react-navigation/native";
 import { LocationObject } from "expo-location";
-import MapView, { Marker } from "react-native-maps";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -23,11 +19,11 @@ import { RootStackParamList } from "../Navigator/MyNavigator";
 import Swiper from "react-native-swiper";
 import { BlurView } from "expo-blur";
 import { BackgroundImageUri } from "../Utils/BackgroundImage";
-
+import PhotoLocationView from "../Components/PhotoLocationView";
 
 export type Props = NativeStackScreenProps<RootStackParamList, "Storage">;
 
-interface SavedPhoto {
+export interface SavedPhoto {
   uri: string;
   timestamp: number;
   location: LocationObject | null;
@@ -130,48 +126,11 @@ const SavedPhotosScreen = () => {
               </View>
             ))}
           </Swiper>
-          <Modal
+          <PhotoLocationView
             visible={modalVisible}
-            transparent={false}
-            animationType="fade"
-            onRequestClose={closeModal}
-            presentationStyle="overFullScreen"
-          >
-            <View style={styles.modalContainer}>
-              {selectedPhoto && (
-                <MapView
-                  style={styles.map}
-                  initialRegion={{
-                    latitude: selectedPhoto.location
-                      ? selectedPhoto.location.coords.latitude
-                      : 0,
-                    longitude: selectedPhoto.location
-                      ? selectedPhoto.location.coords.longitude
-                      : 0,
-                    latitudeDelta: 0.02,
-                    longitudeDelta: 0.02,
-                  }}
-                >
-                  <Marker
-                    coordinate={{
-                      latitude: selectedPhoto.location
-                        ? selectedPhoto.location.coords.latitude
-                        : 0,
-                      longitude: selectedPhoto.location
-                        ? selectedPhoto.location.coords.longitude
-                        : 0,
-                    }}
-                    title={
-                      selectedPhoto.location
-                        ? `Latitude: ${selectedPhoto.location.coords.latitude}, Longitude: ${selectedPhoto.location.coords.longitude}`
-                        : "Location not available"
-                    }
-                  />
-                </MapView>
-              )}
-              <Button title="Close" onPress={closeModal} />
-            </View>
-          </Modal>
+            closeModal={closeModal}
+            selectedPhoto={selectedPhoto}
+          />
         </View>
       </SafeAreaView>
     </ImageBackground>

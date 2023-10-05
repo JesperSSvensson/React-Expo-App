@@ -12,6 +12,7 @@ import * as LocalAuthentication from "expo-local-authentication";
 import { RootStackParamList } from "../Navigator/MyNavigator";
 import { RouteProp } from "@react-navigation/native";
 import { BackgroundImageUri } from "../Utils/BackgroundImage";
+import LottieAnimation from "../Utils/LottieAnimation";
 
 interface Props {
   navigation: any;
@@ -19,14 +20,6 @@ interface Props {
 }
 
 export default function Login({ navigation }: Props) {
-  const lottieRef = useRef<LottieView | null>(null);
-
-  useEffect(() => {
-    if (lottieRef.current) {
-      lottieRef.current.play();
-    }
-  }, []);
-
   const getAccessWithPinCode = async () => {
     try {
       const result = await LocalAuthentication.authenticateAsync({
@@ -48,16 +41,11 @@ export default function Login({ navigation }: Props) {
     <ImageBackground
       source={{ uri: BackgroundImageUri }}
       style={styles.backgroundImage}
-    >
-      <LottieView
-        ref={lottieRef}
-        source={require("../Utils/Animation - 1696448678389.json")} 
-        style={styles.animation}
-        loop
-      />
+    > 
+    <LottieAnimation />
       <View style={styles.container}>
         <View style={styles.blurContainer}>
-          <BlurView intensity={10} style={styles.blurView} tint="light">
+          <BlurView intensity={10} style={styles.blurView} tint="dark">
             <TouchableOpacity
               style={styles.loginButton}
               activeOpacity={0.7} 
@@ -83,9 +71,9 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
   },
   blurContainer: {
-    width: 200,
-    height: 200,
-    borderRadius: 10,
+    width: 110,
+    height: 110,
+    borderRadius: 90,
     overflow: "hidden",
   },
   blurView: {
@@ -93,27 +81,23 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  animation: {
-    position: "absolute",
-    width: "20%",
-    height: "20%",
-    top: "20%", 
-    left: "20%", 
-    
-  },
+
   loginButton: {
     backgroundColor: "pink", 
-    borderRadius: 10,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
+    borderRadius:20,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
     elevation: 5, 
     shadowColor: "black", 
-    shadowOpacity: 0.3, 
+    shadowOpacity: 0.7, 
     shadowOffset: { width: 0, height: 2 },
   },
   buttonText: {
     fontSize: 16,
     fontWeight: "bold",
     color: "white", 
+    shadowColor: "black", 
+    shadowOpacity: 0.6, 
+    shadowOffset: { width: 2, height: 2 },
   },
 });
