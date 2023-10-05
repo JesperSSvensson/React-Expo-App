@@ -6,7 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import { BlurView } from "expo-blur"; 
+import { BlurView } from "expo-blur";
 import * as LocalAuthentication from "expo-local-authentication";
 import { RootStackParamList } from "../Navigator/MyNavigator";
 import { RouteProp } from "@react-navigation/native";
@@ -22,7 +22,7 @@ export default function Login({ navigation }: Props) {
   const getAccessWithPinCode = async () => {
     try {
       const result = await LocalAuthentication.authenticateAsync({
-        promptMessage: "Logga in med din personliga kod",
+        promptMessage: "Use your verification code",
       });
 
       if (result.success) {
@@ -30,9 +30,11 @@ export default function Login({ navigation }: Props) {
         navigation.navigate("Home");
       } else {
         alert("Authentication failed or canceled.");
+        LocalAuthentication.cancelAuthenticate();
       }
-    } catch (error) {
-      LocalAuthentication.cancelAuthenticate();
+    } catch (error: any) {
+      console.error("Authentication error:", error);
+      alert("An error occurred during authentication. Please try again later.");
     }
   };
 
@@ -40,14 +42,14 @@ export default function Login({ navigation }: Props) {
     <ImageBackground
       source={{ uri: BackgroundImageUri }}
       style={styles.backgroundImage}
-    > 
-    <LottieAnimation />
+    >
+      <LottieAnimation />
       <View style={styles.container}>
         <View style={styles.blurContainer}>
           <BlurView intensity={10} style={styles.blurView} tint="dark">
             <TouchableOpacity
               style={styles.loginButton}
-              activeOpacity={0.7} 
+              activeOpacity={0.7}
               onPress={getAccessWithPinCode}
             >
               <Text style={styles.buttonText}>Logga in</Text>
@@ -82,21 +84,21 @@ const styles = StyleSheet.create({
   },
 
   loginButton: {
-    backgroundColor: "pink", 
-    borderRadius:20,
+    backgroundColor: "pink",
+    borderRadius: 20,
     paddingHorizontal: 10,
     paddingVertical: 5,
-    elevation: 5, 
-    shadowColor: "black", 
-    shadowOpacity: 0.7, 
+    elevation: 5,
+    shadowColor: "black",
+    shadowOpacity: 0.7,
     shadowOffset: { width: 0, height: 2 },
   },
   buttonText: {
     fontSize: 16,
     fontWeight: "bold",
-    color: "white", 
-    shadowColor: "black", 
-    shadowOpacity: 0.6, 
+    color: "white",
+    shadowColor: "black",
+    shadowOpacity: 0.6,
     shadowOffset: { width: 2, height: 2 },
   },
 });

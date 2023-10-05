@@ -32,7 +32,7 @@ function CameraPreview({ photo, retakePicture, savePhoto }: CameraPreviewProps) 
         >
           <View style={styles.textContainer}>
             <TextInput
-              placeholder="Lägg till en kommentar..."
+              placeholder="Add a comment..."
               value={textInput}
               onChangeText={(text) => setTextInput(text)}
               autoCorrect={true}

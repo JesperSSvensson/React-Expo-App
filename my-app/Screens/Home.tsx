@@ -84,7 +84,7 @@ const HomeScreen  = () => {
             }),
           ]}
         >
-          Welcome to My Photo App!
+          Welcome to PhotoWiz
         </Animated.Text>
 
         <Animated.Text
@@ -152,7 +152,7 @@ const HomeScreen  = () => {
             }),
           ]}
         >
-          -See location of pictures
+          -Location of your pictures
           <MaterialIcons name="location-on" size={20} color="#7fff6e" />
         </Animated.Text>
       </View>
@@ -167,6 +167,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   welcomeText: {
+    textDecorationLine: "underline",
     fontSize: 32,
     fontWeight: "bold",
     color: "white",

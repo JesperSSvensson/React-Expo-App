@@ -23,18 +23,20 @@ const CameraScreen = () => {
   const cameraRef = useRef<Camera | null>(null);
 
   useEffect(() => {
-    async function getLocationAsync() {
-      const { status } = await requestForegroundPermissionsAsync();
-      if (status === "granted") {
-        const location = await getCurrentPositionAsync({});
-        setLocation(location);
-      } else {
-        Alert.alert("Access to location denied.");
-      }
-    }
     getLocationAsync();
     StartCamera();
   }, []);
+
+
+  const getLocationAsync = async () => {
+    const { status } = await requestForegroundPermissionsAsync();
+    if (status === "granted") {
+      const location = await getCurrentPositionAsync({});
+      setLocation(location);
+    } else {
+      Alert.alert("Access to location denied.");
+    }
+  };
 
   const StartCamera = async () => {
     const { status } = await Camera.requestCameraPermissionsAsync();
@@ -43,7 +45,7 @@ const CameraScreen = () => {
       setStartCamera(true);
       setCameraType(CameraType.back);
     } else {
-      Alert.alert("Access denied");
+      Alert.alert("Access to camera denied");
     }
   };
 
@@ -53,7 +55,6 @@ const CameraScreen = () => {
       console.log(photo);
       setPreviewVisible(true);
       setCapturedImage(photo);
-
       console.log("location", location);
     }
   };
@@ -70,7 +71,7 @@ const CameraScreen = () => {
           caption: caption,
         };
         await AsyncStorage.setItem(key, JSON.stringify(photoWithLocation));
-        Alert.alert("Bild sparad");
+        Alert.alert("Photo saved successfully!");
         console.log("Photo saved successfully!");
       } catch (error) {
         console.error("Error saving photo:", error);
